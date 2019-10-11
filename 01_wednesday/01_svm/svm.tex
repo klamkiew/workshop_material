@@ -73,9 +73,116 @@ classifier = svm.SVC(kernel='linear')
 
   \begin{lstlisting}[language=Python]
 from sklearn import svm, datasets
+from sklearn.metrics import confusion_matrix, accuracy_score
 # load the iris dataset
 iris = datasets.load_iris()
-print(iris)
+@\pause@
+# parse the important fields
+data = iris.data
+target = iris.target
+@\pause@
+# create a classifer model via svm and train it with the data
+svmLinear = svm.SVC(kernel='linear').fit(data, target)
+@\pause@
+# predict with our model
+prediction = svmLinear.predict(data)
+@\pause@
+# check performance of our prediction and model
+confusion_matrix(target, prediction)
+accuracy_score(target, prediction)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{Easy, right?}
+  \begin{block}{Problems...!?}
+    \uncover<2->{
+      I used the same data for training and prediction (testing). This is very bad practice and 
+      should be avoided at all cost.\\ \ \\
+      Our classifier learns based on the given training data - obviously, if the test data is identical
+      to the training data, the model performs well.\\ \ \\
+      We have to split our training set...
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{Splitting the data in training and test sets}
+  \begin{lstlisting}[language=Python]
+from sklearn.model_selection import train_test_split
+@\pause@
+# here, we split our data set into different parts - for training and testing
+# the method train_test_split() returns a tuple with 4 elements,
+# which are stored in the appropriate variables, respectively.
+data_train, data_test, target_train, target_test = train_test_split(
+        data, target, test_size=0.33)
+@\pause@
+# train the model on the split data
+svmLinear = svm.SVC(kernel='linear').fit(data_train, target_train)
+# predict the targets of the "new data"
+prediction = svmLinear.predict(data_test)
+@\pause@
+# get the performance of this model
+confusion_matrix(target_test, prediction)
+accuracy_score(target_test, prediction)
+  \end{lstlisting}
+\end{frame}
+
+\section[Hyperparameter]{SVM Kernel and other Hyperparamter}
+\begin{frame}[c, fragile]\frametitle{Different kernels may yield different results...}
+  \uncover<2->{
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{sphx_glr_plot_iris_001.png}
+  \end{figure}
+  }
+\end{frame}
+
+\begin{frame}[c, fragile]{Let us classify handwritten digits}
+  \begin{lstlisting}[language=Python]
+from sklearn import svm, datasets
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.model_selection import train_test_split
+# get the data
+digits = datasets.load_digits()
+@\pause@
+# split everything
+data_train, data_test, target_train, target_test = train_test_split(
+        data, target, test_size=0.33)
+# train the model with RBF kernel on the training set
+digitSVM = svm.SVC(kernel='rbf').fit(data_train, target_train)
+@\pause@
+prediction = digitSVM.predict(data_test)
+confusion_matrix(target_test, prediction)
+accuracy_score(target_test, prediction)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c, fragile]{Well, that didn't work...}
+  \pause
+  \begin{lstlisting}[language=Python]
+# train the model with linear kernel on the training set
+digitSVM = svm.SVC(kernel='linear').fit(data_train, target_train)
+@\pause@
+prediction = digitSVM.predict(data_test)
+confusion_matrix(target_test, prediction)
+accuracy_score(target_test, prediction)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c,fragile]{Changing the degree of our kernel function}
+  A linear kernel is essentially the same as a polynomial kernel with
+  degree 1. So, what happens, if we change this parameter?
+  \pause
+  \begin{lstlisting}[language=Python, showstringspaces=false]
+# init a for loop to change the hyperparamter 'degree'
+for d in range(1,11):
+  # train different SVMs with a different kernel each time
+  digitSVM = svm.SVC(kernel='poly', degree=d, gamma='auto').
+    fit(data_train, target_train)
+  prediction = digitSVM.predict(data_test)
+  # some output things
+  print(f"Degree of polynomial kernel: {d}")
+  print(f"Accuracy of digit classification: 
+    {accuracy_score(target_test, prediction)}")
   \end{lstlisting}
 \end{frame}
 
