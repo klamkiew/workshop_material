@@ -1,0 +1,8 @@
+\frametitle{The Iris test data set}
+
+  \begin{lstlisting}[language=Python]
+from sklearn import svm, datasets
+# load the iris dataset
+iris = datasets.load_iris()
+print(iris)
+  \end{lstlisting}

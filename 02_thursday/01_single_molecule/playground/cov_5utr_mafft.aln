@@ -1,0 +1,72 @@
+CLUSTAL format alignment by MAFFT FFT-NS-2 (v7.407)
+
+
+12082738_HCoV_2 ---------------------------acuuaaguaccuuaucuaucuacagauagaaaa
+13752444_PEDV_e ---------------------------acuuaaaaagauuuucuaucuacggauag-uua
+148283139_BatCo --------------------------gacuuaaagauauaaucuaucugucgauagaguc
+152994036_BatCo --------------------------gacuuaaagauauuaucuaucuauagauagauca
+169260919_BatCo --------------------------gacuuaaagauauaauccaucuacagauag-agu
+169260927_BatCo --------------------------gacuuaaagauauaauccaucuagcgacgg-guu
+93004452_HCoV_N ----------------------------cuuaaagaauuuuucuaucuauagauagagaa
+13397900_TGEV_e acuuuuaaaguaaagugaguguagcguggcuauaucucuucuuuuacuuuaacuag----
+                                              ** .    *  *    **   .  .*    
+
+12082738_HCoV_2 guugcuu-uuuagacuuugu----gucuacuuuucucaacuaaacgaaauuuuug-----
+13752444_PEDV_e gcucuuuuucuagac-cuu-----gucuacucaauucaacuaaacagaaauuuuguc-cu
+148283139_BatCo cuuaucuuuuuagacuuucc---agucuacucuucucaacuaaacgaaauuuacgucuuu
+152994036_BatCo auuucuuuccuagacuuuu-----gucuacucgauucaacuaaac-gaaauuuug-----
+169260919_BatCo guacuc-uucuagacuuuu-----gucuacuccccucaacuaaacgaaauuuuug-----
+169260927_BatCo auacucuuuuuagacuguu-----gucuaauccccucaacuaaacgaaauuuuug-----
+93004452_HCoV_N uuuucuuauuuagacuuugu----gucuacuccucucaacuaaacgaaauuuuu------
+13397900_TGEV_e --ccuugugcuagauuuugucuucggacaccaacucgaacuaaacgaaauauuugucuuu
+                          ****   *      *   *        ******** .**  *        
+
+12082738_HCoV_2 ------------cuauggccggcaucuuugaugcuggagucguaguguaauugaaauuuc
+13752444_PEDV_e --------uccuuccggccgcauguucaugcugc-----uggaagcuggcguggaauuuc
+148283139_BatCo --------uuguguaugcuacgcaugcacaauu-------agauguguauuugagauuuc
+152994036_BatCo --------uccuucagcacacaugucuaugugug-----cugaagugaaauuggaauuuc
+169260919_BatCo -----------------ccauauguuuauggcu---------------aauugaaauuuc
+169260927_BatCo -----------------ccauacuuguauggcg---------------gauugaaauuuc
+93004452_HCoV_N ------------cuagugcugucauuuguuaug--gcaguccuaguguaauugaaauuuc
+13397900_TGEV_e cuaugaaaucauagaggacaagcguugauuauu------------------------ucc
+                                        *                                * *
+
+12082738_HCoV_2 auu-uggguu--gcaacaguuuggaagcaagugcuguguguccua-gucuaaggguuucg
+13752444_PEDV_e auu--agguuugcuuaaguagccaucgcaagugcugugcuguccucuaguuccugguugg
+148283139_BatCo guuccagguu--gccagccuuguguaacaagugucgugcuucuagggguugcacuugacg
+152994036_BatCo gcu--agguuugcuu-aguagcuaguacaagugucgugcugcuccaggguucuuggugug
+169260919_BatCo agu--cgguu--guuaacauacuugcacaagugucgugcaugucgccagucccuccuuuc
+169260927_BatCo ccu--agguu--accaccaucccggccccagugucgugucauucaguggucccucgcacu
+93004452_HCoV_N guc-aaguuu--guaa-acugguuaggcaaguguuguauuuucuguguuuaagcacuggu
+13397900_TGEV_e auu-caguuuggcaaucacuccuuggaacgggguugagc-------gaacggugcaguag
+                      * **                   .* *  * .                      
+
+12082738_HCoV_2 uguuccgucacga-gauuccauucuacaaacgc-----------cuuacucgagguuccg
+13752444_PEDV_e cguuccgucgccuucuacauacuagacaaacag-----------ccuuccuccgguuccg
+148283139_BatCo uguuccgucacgu--acuuguguccuuaguugc-----------cc--cacgcuguucug
+152994036_BatCo gguuccgucucacacuucacacccucaaaguag-----------ccuuccugcaguuuug
+169260919_BatCo aguuccgucuguu-agguauacuagguggcugc-----------cuuugguucaguuccg
+169260927_BatCo -guuccgucagu---gcuuaaaccacugucuga-----------ccugcacguaguucug
+93004452_HCoV_N gguucug---------------uccacuagugcacacauugauacuuaagugguguucug
+13397900_TGEV_e gguuccgucccuauuucguaagucgccuaguag----------uagcgagugcgguuccg
+                 **** *                        .                      ***  *
+
+12082738_HCoV_2 ucucguguuug-uguggaagcaaaguucugucuuuguggaaaccaguaacuguuccua--
+13752444_PEDV_e ucuggggguug-uguggauaacuaguuccgucuaguuugaaaccaguaacugccggcu--
+148283139_BatCo ucaguguggug-uguggauauaguguuccgucacuauugaaaccgauaacugugcaca--
+152994036_BatCo ucugcagguug-uguggaaagucuguuccgucagacuugaaaccgauaacuguuagcu--
+169260919_BatCo ucuggccauug-uguggauaguacguuccgucgugcuugaaaccgauaacuagcaggu--
+169260927_BatCo ucugcgugcag-uguggauaguacguuccgucgugcuugaaaccgauaacaggucgcu--
+93004452_HCoV_N ucacugcuuau-uguguaagcaacguucugucguuguggaaaccaauaacugcuaacc--
+13397900_TGEV_e cccguacaacguuggguagaccggguuccguccug--ugaucucccucgccggccgccag
+                 *          ** * * .    **** ***      **   *  * .* .        
+
+12082738_HCoV_2 ----
+13752444_PEDV_e ----
+148283139_BatCo ----
+152994036_BatCo ----
+169260919_BatCo ----
+169260927_BatCo ----
+93004452_HCoV_N ----
+13397900_TGEV_e gaga
+                    

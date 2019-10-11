@@ -1,0 +1,11 @@
+\frametitle{CMsearch}
+    \begin{lstlisting}
+# One last step - now we search for sequences (or fragments),
+# that fit to our covariance model.
+
+# search in the fasta file for sequences matching
+# the cmfile and get their positions as table
+
+$> cmsearch --cpu 4 --tblout corona_5utr_cmsearch.csv corona_5utr.cvm \
+        all_complete_acov.fa > cmsearch.log
+    \end{lstlisting}

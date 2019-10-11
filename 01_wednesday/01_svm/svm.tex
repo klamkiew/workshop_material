@@ -1,0 +1,96 @@
+\input{config}
+
+\title{Theoretical and practical metagenomic approaches to viral discovery}
+\subtitle{Practical Session: Practical Introduction to Machine Learning and SVMs}
+\author{Kevin Lamkiewicz, Manja Marz}
+\date{24.10.2019\\[1em]European Virus Bioinformatics Center}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\begin{frame}[c]\frametitle{whoami}
+  \uncover<2->{
+  \begin{minipage}{0.5\textwidth}
+    \begin{itemize}
+      \item PhD student at Manja's Lab since 2017
+      \item Interested in (RNA) viruses 
+      \item Focus on RNA secondary structures and ncRNAs
+      \item Experience with Machine Learning, RNA structures, assemblies, alignments, SNP calling, \dots
+    \end{itemize}
+  \end{minipage} \hfill \begin{minipage}{0.45\textwidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.5\textwidth]{strahlemann.jpg}
+    \end{figure}
+  \end{minipage}
+  }
+\end{frame}
+
+\section[sklearn]{Introducing scikit-learn}
+
+\begin{frame}[c,fragile]\frametitle{Building a support vector machine with Python3}
+  \begin{lstlisting}[language=Python]
+#!/usr/bin/env python3
+
+# to import scikit-learn we write the following
+import sklearn
+@\pause@
+# but actually we need this:
+from sklearn import svm
+@\pause@
+# now we create our SVM
+classifier = svm.SVC(kernel='linear')
+@\pause@
+# Done.
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c,fragile]\frametitle{Understanding the two lines of code}
+
+  \begin{lstlisting}[language=Python]
+from sklearn import svm
+  \end{lstlisting}
+  \begin{itemize}
+    \item {\small make all functions of the \texttt{svm} class available}
+  \end{itemize}
+  
+\pause
+  \begin{lstlisting}[language=Python]
+classifier = svm.SVC(kernel='linear')
+  \end{lstlisting}
+  \begin{itemize}
+    \item {\small create a classifier object with a linear kernel}
+  \end{itemize}
+
+\end{frame}
+
+\section[Iris data]{Applying machine learning to real biological data}
+
+\begin{frame}[c, fragile]\frametitle{The Iris test data set}
+
+  \begin{lstlisting}[language=Python]
+from sklearn import svm, datasets
+# load the iris dataset
+iris = datasets.load_iris()
+print(iris)
+  \end{lstlisting}
+\end{frame}
+
+% Backup Slides. Using this macro, you'd get a slide number for each
+% backup slide without increasing the maximum slide numbers of the original presentation.
+% However, for this, the framenumber has to be inserted - which isn't in the template by default
+\beginbackup
+
+\begin{frame}[c]\frametitle{Coffee Break}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{coffeebreak.png}
+  \end{figure}
+\end{frame}
+
+\backupend
+
+\end{document}

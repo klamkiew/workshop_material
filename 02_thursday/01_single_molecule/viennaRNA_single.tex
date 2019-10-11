@@ -1,0 +1,282 @@
+\input{config}
+
+\title{Theoretical and practical metagenomic approaches to viral discovery}
+\subtitle{Practical Session: ViennaRNA on single molecules}
+\author{Kevin Lamkiewicz, Manja Marz}
+\date{24.10.2019\\[1em]European Virus Bioinformatics Center}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\section[Intro]{Introducing ViennaRNA}
+
+\begin{frame}[c]\frametitle{Nothing in common!}
+  \begin{center}
+      \includegraphics[width=1\textwidth]{figures/sequence_sim.pdf}
+  \end{center}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Tools and Scripts}
+    
+  \begin{itemize}
+      \item<2-> \texttt{ViennaRNA}
+      \uncover<2->{
+      \begin{itemize}
+          \item \texttt{RNAfold}
+          \item \texttt{RNAsubopt}
+          \item \texttt{RNAcofold}
+          \item \texttt{RNAduplex}
+          \item \texttt{RNAalifold}
+          \item \texttt{RNALfold}
+          \item \texttt{$\dots$}
+      \end{itemize}
+      }
+
+      \item<3-> \texttt{LocaRNA}
+      \item<4-> \texttt{MAFFT}, \texttt{VARNA}, $\dots$
+  \end{itemize}
+\end{frame}
+
+\section[RNAfold]{Hands on!}
+
+\begin{frame}[c, fragile]\frametitle{RNAfold}
+  \begin{overlayarea}{\textwidth}{0.5\textheight}
+  \begin{lstlisting}
+# Use RNAfold on sequence.fasta in order 
+# to fold all sequences in the file
+$> RNAfold  < sequence.fasta
+  \end{lstlisting}    
+
+  \begin{onlyenv}<2->%
+  \begin{lstlisting}
+# Redirect the output of RNAfold into a file
+$> RNAfold  < sequence.fasta > sequence.fold
+  \end{lstlisting}            
+  \end{onlyenv}
+  \end{overlayarea}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{RNAfold mit Partition Function}
+  \begin{lstlisting}
+# Use the -p parameter to calculate the partition function
+# on top of the minimum free energy secondary structures
+$> RNAfold -p < sequence.fasta > sequence.fold  
+@\pause@
+# This will produce a centroid structure; 
+# the structure with minimal average distance to all 
+# sampled structures.
+# . unpaired
+# , weakly paired
+# | strongly paired w/o preference
+# { } weakly paired
+# ( ) strongly paired
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile]\frametitle{MEA structure}
+  \begin{block}{Maximum expected accuracy Structure}
+      Reminder: With the \emph{partition function} we are able to calculate basepair probabilities.
+      The structure with the heighest sum of all probabilities, is called the \emph{MEA structure}.
+  \end{block}
+
+  \begin{onlyenv}<2>
+   \hfill
+  \begin{lstlisting}
+# Use -p and --MEA to calculate the MFE,
+# the MEA and the centroid structure.
+# Note: The MFE and the MEA structure do not have to be the same!
+# Note2: --MEA usually implies -p
+$> RNAfold -p --MEA < sequence.fasta > sequence.fold
+  \end{lstlisting}
+\end{onlyenv}
+\end{frame}
+
+\begin{frame}[c,fragile]\frametitle{Structure and Dotplots}
+  
+  \begin{lstlisting}
+# the same command again; you will get an rna.ps and a dot.ps
+$> RNAfold -p --MEA < sequence.fasta > sequence.fold
+  \end{lstlisting}
+  
+
+  \begin{minipage}{0.4\textwidth}
+      \includegraphics[width=0.8\textwidth]{figures/rna.pdf}
+  \end{minipage} \hfill \begin{minipage}{0.4\textwidth}
+      \includegraphics[width=0.8\textwidth]{figures/dot.pdf}
+  \end{minipage}
+\end{frame}
+
+
+\begin{frame}[t, fragile]\frametitle{RNAfold+}
+  
+  \begin{block}{Let's use some colors!}
+      The \texttt{ViennaRNA Package} offers some \texttt{Perl}-scripts, which can enrich the PostScript files of our structures.
+  \end{block}
+  \vfill
+  
+  \uncover<2->{\includegraphics[width=0.3\textwidth]{figures/entropy.pdf}} \hfill
+  \uncover<3->{\includegraphics[width=0.3\textwidth]{figures/probability.pdf}} \hfill
+  \uncover<4>{\includegraphics[width=0.3\textwidth]{figures/access.pdf}}
+  
+  
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{RNAfold Perl Scripts}
+  \begin{lstlisting}
+# Low entropy regions have little structural flexibility, 
+# which means the reliability of the predicted structure is high.
+# High entropy indicate many structual alternatives
+# which might be functional important but make the prediction
+# more difficult - and thus less reliable.
+$> ./relplot.pl rna.ps dot.ps > entropy.ps
+@\pause@
+# -p colors the nucleotides based on their base-pairing
+# probability
+$> ./relplot.pl -p rna.ps dot.ps > probability.ps
+@\pause@
+# -a colors the nucleotides based on their accessbility
+# (e.g. the probability of being unpaired)
+$> ./relplot.pl -a rna.ps dot.ps > access.ps
+  \end{lstlisting}
+\end{frame}
+
+\section[Plausible Structures]{Suboptimal Structures and Constraints}
+
+\begin{frame}[c, fragile]\frametitle{RNAsubopt}
+\begin{overlayarea}{\textwidth}{0.7\textheight}
+Sometimes we're interested in suboptimal structures.
+
+  \begin{lstlisting}
+# In general RNAsubopt is used exactly like RNAfold.
+# With -p one calculates the partition function
+$> RNAsubopt [OPTIONS] < sequence.fasta > sequence.subopt
+@\pause@
+# With the -e parameter, one can define a certain
+# energy range. Using this, RNAsubopt returns
+# all structures that are in range of this parameter.
+$> RNAsubopt -e 2 < sequence.fasta > sequence_e2.subopt
+  \end{lstlisting}
+\end{overlayarea}
+
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{RNAfold with constraints}
+  \begin{itemize}
+      \item Structure of RNA is partly known (e.g. via SHAPE experiments)
+      \item \texttt{RNAfold} is able to consider this knowledge
+  \end{itemize}
+
+  \begin{lstlisting}
+# Enable -C to include constraints. --noPS prevents the generation
+# of the rna.ps and dot.ps files.
+$> RNAfold --noPS -C < constrained.fasta > constrained.fold
+@\pause@
+# . (no constraint for this base)
+# | (corresponding base has to be paired)
+# x (base is unpaired)
+# < (base i is paired with base j>i)
+# > (base i is paired with base j<i)
+# and matching brackets ()  (base i pairs with base j)
+  \end{lstlisting}
+\end{frame}
+
+
+\section[Alignments]{Calculating structures alignment-based}
+
+\begin{frame}[c, fragile]\frametitle{RNAalifold}
+  \texttt{RNAalifold} calculates a \emph{consensus} RNA secondary structure for several aligned RNA sequences.
+\begin{lstlisting}
+# RNAalifold accepts CLUSTAL, Stockholm, FASTA or MAF
+# formats for the input alignment.
+# --color will produce a colored version of the structure plot
+# --aln produces a colored alignment based on the structure
+
+$> RNAalifold --aln --color < input.aln > consensus.alifold
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{LocARNA vs MAFFT}
+  In order to create a multiple sequence alignment, we can use \texttt{MAFFT} and/or \texttt{LocARNA} (and many more...)
+  \begin{lstlisting}
+# mafft creates a multiple sequence alignment based on
+# sequence conservation only
+$> mafft --clustalout cov_5utr.fa > cov_5utr_mafft.aln
+
+# locarna folds and aligns the sequences simultanously,
+# yielding better results for sequence that share a
+# structural conservation
+# However, locarna needs quite some time compared to sequence-based 
+# alignment tools.
+$> mlocarna --thread 4 cov_5utr.fasta > cov_5utr.locarna
+  \end{lstlisting}   
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{RNAalifold Results}
+  \begin{lstlisting}
+# alirna.ps and aln.ps give information of the structural conservation
+$> RNAalifold --aln --color < cov_5utr_mafft.aln \ 
+      > cov_5utr_mafft.alifold
+
+# NOTE: both PostScript files will be overwritten!
+# locarna saves the alignment in a subdirectory
+$> RNAalifold --aln --color < cov_5utr.out/results/result.aln \ 
+      > cov_5utr_locarna.alifold
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Structures}
+      
+      \centering
+      \only<1>{\texttt{MAFFT}\\
+      \includegraphics[width=0.6\textwidth]{figures/alirna_mafft.ps}}
+      \only<2>{\texttt{LocARNA}\\
+      \includegraphics[width=0.6\textwidth]{figures/alirna_locarna.ps}}
+
+      \only<3->{
+      \begin{minipage}{0.45\textwidth}
+      \centering
+      \texttt{MAFFT}\\
+      \includegraphics[width=0.75\textwidth]{figures/alirna_mafft.ps}
+      \end{minipage} \hfill \begin{minipage}{0.45\textwidth}
+      \centering
+      \texttt{LocARNA}\\
+      \includegraphics[width=0.75\textwidth]{figures/alirna_locarna.ps}
+      \end{minipage}
+      }
+  
+\end{frame}
+
+\begin{frame}[c]\frametitle{VARNA: for nice figures!}
+  \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.95\textwidth]{figures/varna.jpg}        
+  \end{figure}
+\end{frame}
+
+\begin{frame}[c]\frametitle{RNAalifold Color Code}
+  \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.95\textwidth]{color_code.pdf}
+  \end{figure}
+\end{frame}
+
+
+
+% Backup Slides. Using this macro, you'd get a slide number for each
+% backup slide without increasing the maximum slide numbers of the original presentation.
+% However, for this, the framenumber has to be inserted - which isn't in the template by default
+\beginbackup
+
+\begin{frame}[c]\frametitle{Coffee Break}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{coffeebreak.png}
+  \end{figure}
+\end{frame}
+
+\backupend
+
+\end{document}

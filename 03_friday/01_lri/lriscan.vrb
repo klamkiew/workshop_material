@@ -1,0 +1,13 @@
+\frametitle{LRIscan Hands-On}
+\begin{block}{Exercise:}
+    Go to \url{https://www.rna.uni-jena.de/supplements/lriscan/}\\
+    \begin{enumerate}
+      \item Download the MSA of the Flaviviruses
+      \item Apply \texttt{LRIscan}
+      \item Do not look at the results on the webpage (yet)
+    \end{enumerate}
+  \end{block}
+  \uncover<2->{
+    If you have your own dataset, roughly of the same size as the Flavivirus MSA, feel free to use it.
+  }
+

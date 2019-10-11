@@ -1,0 +1,213 @@
+\input{config}
+
+\title{Theoretical and practical metagenomic approaches to viral discovery}
+\subtitle{Practical Session: ViennaRNA for RNA-RNA Interactions}
+\author{Kevin Lamkiewicz, Manja Marz}
+\date{24.10.2019\\[1em]European Virus Bioinformatics Center}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\begin{frame}[c]{Why RNA-RNA Interactions?}
+  ToDo: Picture here.
+\end{frame}
+
+\section[Sequences]{Interactions for single sequences}
+
+
+\begin{frame}[c, fragile]\frametitle{RNAcofold}
+  \begin{lstlisting}
+# RNAcofold works like RNAfold, but allows to specify two RNA sequences.
+# These sequences are then allowed to form a dimer structure. In order
+# to calculate the hybrid structure, it is necessary to concatenate the
+# two RNA sequence, using & as a separator.
+
+$> RNAcofold [OPTIONS] < sequences.fasta > sequences.cofold
+
+# >seq1
+# AUGGCAUCGACA
+# >seq2
+# UGUCGAAUCCAA
+
+# RNAcofold Input:
+# AUGGCAUCGACA&UGUCGAAUCCAA
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c]\frametitle{RNAcofold}
+  \begin{minipage}[c]{0.4\textwidth}
+  \begin{figure}
+    \centering
+    \includegraphics[height=0.75\textheight]{cofold_simple.pdf}
+  \end{figure}
+\end{minipage}\hfill\begin{minipage}[c]{0.55\textwidth}
+  \begin{itemize}
+    \item First sequence is colored green
+    \item Second sequence is colored red\\[3em]
+    \item<2-> What happens, when there are more than 2 input sequences? 
+  \end{itemize}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{RNAcofold with partition function}
+  \begin{lstlisting}
+# We calculated the MFE structure of the interacting molecules (RNA dimer).
+# RNAcofold also has the -p parameter implemented. 
+
+$> RNAcofold -p < sequences.fasta > sequences.cofold
+
+  \end{lstlisting}
+  \vspace{4em}
+  \uncover<2->{
+    We can use \texttt{relplot.pl} on the PostScript files as well,
+    but it looks a bit... weird.
+  }
+\end{frame}
+
+\begin{frame}[c]\frametitle{RNAcofold with partition function}
+  \begin{figure}
+    \centering
+    \includegraphics[height=0.75\textheight]{cofold_simple_part.pdf}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}[c,fragile]{AA, AB, BB}
+    \begin{lstlisting}
+  # Until now, we just looked at the heterodimer of the two sequences.
+  # But how do the molecules behave individually?
+  
+  $> RNAcofold -a < sequences.fasta > sequences.cofold
+    \end{lstlisting}
+    \vspace{4em}
+    \uncover<2->{
+      The AA and BB dimer describe the MFE structure of two RNA molecules of
+      sequence one and sequence two, respectively.
+    }
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{RNAduplex}
+  \begin{lstlisting}
+# RNAduplex is very similar to RNAcofold. Actually,
+# it is a special case of RNAcofold, where only inter-molecular
+# base pairs are allowed.
+
+$> RNAduplex [OPTIONS] < sequences.fasta > sequences.duplex
+@\pause@
+# Alternative:
+# RNAcofold -C < sequences_constrained.fasta
+# sequences_constrained.fasta
+# UAGCUAGCAUGCAUCGACGAU&CGAUGCAUGCAUGCAUGCAUC
+# <<<<<<<<<<<<<<<<<<<<<&>>>>>>>>>>>>>>>>>>>>>
+  \end{lstlisting}
+\end{frame}
+
+
+\section[Alignments]{Co-Folding with MSAs}
+
+\begin{frame}[c,fragile]{RNAaliduplex}
+  \begin{overlayarea}{\linewidth}{\textheight}
+  \uncover<2->{
+  \begin{block}{Not much implemented...}
+    Unfortunately, ViennaRNA does not provide many possibilities for alignment-based co-folding 
+    analyses. Indeed, only the alignment version of \texttt{RNAduplex} is implemented in \texttt{RNAaliduplex}.
+  \end{block}
+  } \vspace{5em} 
+  \begin{onlyenv}<3>
+    
+\begin{lstlisting}
+RNAaliduplex [OPTIONS] <file1.aln> <file2.aln>
+@\pause@
+# RNAaliduplex expects two input files (both CLUSTAL alignments)
+# and predicts optimal and suboptimal binding sites. 
+# However, only inter-molecular base pairs are taken into account.
+\end{lstlisting}
+\end{onlyenv}
+\end{overlayarea}
+\end{frame}
+
+\begin{frame}[c, fragile]{Alignment-based intra-molecular base pairs?}
+  \uncover<2->{
+  \begin{block}{What would you do?}
+    Discuss, play around, try to make some examples - I will go around and answer questions, discuss your ideas
+    and help you as good as I can.
+  \end{block}
+  }
+\end{frame}
+
+
+\begin{frame}[c, fragile]{Alignment-based intra-molecular base pairs!}
+  \uncover<2->{
+  \begin{block}{Different ways to do it}
+    Most commonly, you'd want to do the following:
+    \begin{enumerate}
+      \item Extract your sequences and align them individually
+      \item Merge the alignments, use \texttt{'NNNNN'} as a separator
+      \item Apply \texttt{RNAalifold} on the alignment
+    \end{enumerate}
+  \end{block}
+  }
+\end{frame}
+
+\section[LRIs]{Long-Range Interactions}
+
+\begin{frame}[c]{Why RNA-RNA Interactions?}
+  ToDo: Picture here.
+\end{frame}
+
+\begin{frame}[c]\frametitle{RNA-RNA interactions are crucial for RNA viruses}
+  \begin{columns}
+  \column{0.6\textwidth}
+  \begin{overlayarea}{\linewidth}{\textheight}
+  \only<1>{
+  \centering
+  \includegraphics[height=0.7\textheight]{figures/long_range_hcv.pdf}\\%
+  \tiny{Fricke, M.~\textit{et al.}~(2015).~Conserved RNA secondary structures and long-range interactions in hepatitis C viruses. RNA, http://doi.org/10.1261/rna.049338.114}%
+  } 
+  \only<2> {
+  \centering
+  \includegraphics[height=0.7\textheight]{figures/long_range_hcv_trans.pdf}\\%
+  \tiny{Fricke, M.~\textit{et al.}~(2015).~Conserved RNA secondary structures and long-range interactions in hepatitis C viruses. RNA, http://doi.org/10.1261/rna.049338.114}%
+  }
+  \only<3> {
+  \centering
+  \includegraphics[height=0.7\textheight]{figures/long_range_hcv_repli.pdf}\\%
+  \tiny{Fricke, M.~\textit{et al.}~(2015).~Conserved RNA secondary structures and long-range interactions in hepatitis C viruses. RNA, http://doi.org/10.1261/rna.049338.114}% 
+  }
+\end{overlayarea}
+  \column{0.4\textwidth}
+  \vspace{-5cm}
+  \begin{itemize}
+      \item<1-> Hepatitis C virus: (+)ssRNA
+      \item<1-> around 9\,kb in size\\[2em]
+      \item<2-> Initiation of Translation
+      \item<3-> Initiation of Replication
+    \end{itemize}
+  \end{columns} 
+\end{frame}
+
+\begin{frame}[c]{}
+  \begin{block}{Exercise:}
+    Take any LRI from HCV, described in the following paper, and try to reconstruct / predict it with the ViennaRNA package.\\[2em]
+    \tiny{Fricke, M.~\textit{et al.}~(2015).~Conserved RNA secondary structures and long-range interactions in hepatitis C viruses. RNA, http://doi.org/10.1261/rna.049338.114}%
+  \end{block}
+\end{frame}
+
+% Backup Slides. Using this macro, you'd get a slide number for each
+% backup slide without increasing the maximum slide numbers of the original presentation.
+% However, for this, the framenumber has to be inserted - which isn't in the template by default
+\beginbackup
+
+% \begin{frame}[c]\frametitle{Coffee Break}
+%   \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.65\textwidth]{coffeebreak.png}
+%   \end{figure}
+% \end{frame}
+
+\backupend
+
+\end{document}
