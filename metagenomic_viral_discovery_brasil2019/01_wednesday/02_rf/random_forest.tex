@@ -11,7 +11,25 @@
   \maketitle
 \end{frame}
 
+\section[Implementation]{How to: Implement the Random Forest Classifier}
 
+\begin{frame}[c,fragile]\frametitle{Random Forest}
+  \begin{lstlisting}[language=Python]
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import datasets
+# we know this already...
+iris = datasets.load_iris()
+data = iris.data
+target = iris.target
+@\pause@
+
+# create the classifier object
+# n_estimators: number of trees for the forest
+# max_depth: 
+rfc = RandomForestClassifier(n_estimators=100, max_depth=2)
+rfc = rfc.fit(data,target)
+  \end{lstlisting}
+\end{frame}
 
 % Backup Slides. Using this macro, you'd get a slide number for each
 % backup slide without increasing the maximum slide numbers of the original presentation.
