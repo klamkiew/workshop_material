@@ -25,9 +25,46 @@ target = iris.target
 
 # create the classifier object
 # n_estimators: number of trees for the forest
-# max_depth: 
+# max_depth: maximum depth of one tree
 rfc = RandomForestClassifier(n_estimators=100, max_depth=2)
-rfc = rfc.fit(data,target)
+rfc = rfc.fit(data, target)
+  \end{lstlisting}
+\end{frame}
+
+
+\section[Hands-On]{Training our model to identify viral elements}
+
+\begin{frame}[c]\frametitle{We want to identify viral pre-miRNAs}
+  \begin{block}{Our task:}
+    In the \texttt{miRBase} database are currently around 320 viral pre-miRNAs.
+    We want to use them in to train a machine learning model that can distinguish between
+    viral pre-miRNAs and other sequences.
+  \end{block}
+  \vspace*{3em}
+  \uncover<2->{
+    \begin{block}{I already prepared...}
+      \begin{itemize}
+        \item a file with all precursors
+        \item a file with our negative data
+        \item some utilities we need (reading the data, ...)
+      \end{itemize}
+    \end{block}
+  }
+\end{frame}
+
+\begin{frame}[c,fragile]\frametitle{}
+  \begin{lstlisting}[language=Python]
+# first we need to translate the sequences into something
+# that can be used by the machine learning algorithm:
+# what are possible features for our task?
+@\pause@
+import numpy as np
+@\pause@
+# read in the data
+trainingsData = read_training_set(positive, negative)
+@\pause@
+# transform the sequence into features
+trainingSet, targets = transform_data(trainingsData)
   \end{lstlisting}
 \end{frame}
 
