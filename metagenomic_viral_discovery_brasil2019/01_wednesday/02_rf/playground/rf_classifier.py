@@ -3,7 +3,6 @@
 """
 Takes two different data sets (positive and negative) as input and
 trains the a random forest classifier based on these training sets.
-The model is trained with a 10-fold cross-validation.
 
 Dependencies:
 numpy
