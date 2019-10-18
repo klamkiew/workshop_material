@@ -11,6 +11,79 @@
   \maketitle
 \end{frame}
 
+\begin{frame}[c]\frametitle{}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics<1>[width=1\textwidth]{dim_redu_1.pdf}
+    \includegraphics<2>[width=1\textwidth]{dim_redu_2.pdf}
+  \end{figure}
+\end{frame}
+
+
+\section[PCA]{PCA with scikit-learn}
+\begin{frame}[c, fragile]\frametitle{A quick example}
+  \begin{lstlisting}[language=Python, showstringspaces=false]
+from sklearn import datasets
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+iris = datasets.load_iris()
+# combine everything into a pandas DataFrame. 
+# numpy.c_ concatenates the given vector into one (note the [] instead of () )
+df = pd.DataFrame(data= np.c_[iris['data'], iris['target_names'][iris['target']]], 
+                  columns= iris['feature_names'] + ['target']) 
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{Normalize your data}
+  \begin{lstlisting}[language=Python, showstringspaces=false]
+features = ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+
+# Here we seperate features from the target column
+x = df.loc[:, features].values
+y = df.loc[:,['target']].values
+
+# Standardizing the only the features
+x = StandardScaler().fit_transform(x)
+  \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[c, fragile]\frametitle{Applying PCA}
+  \begin{lstlisting}[language=Python, showstringspaces=false]    
+pca = PCA(n_components=2)
+principalComponents = pca.fit_transform(x)
+principalDf = pd.DataFrame(data = principalComponents
+         , columns = ['principal component 1', 'principal component 2'])
+finalDf = pd.concat([principalDf, df[['target']]], axis = 1)
+  \end{lstlisting}
+\end{frame}
+
+\section[Classification]{Virus Classification with PCA}
+
+\begin{frame}[c]\frametitle{Other Application of PCAs}
+  \begin{block}{Dimension Reduction in Machine Learning}
+    Normally, you would like to use PCA (or any other method for dimension reduction) to \textbf{speed up}
+    your machine learning algorithm.
+    Instead of learning many instances with over 700 features (e.g. our handwritten letter example from earlier),
+    we can \textbf{reduce the number of features}, by only taking the most \textbf{important combinations} of features into account.
+  \end{block}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Exercise / Homework}
+  \begin{block}{}
+  Have a look at the \texttt{viral\_data.fasta}.\\
+  There are some known viruses, but also some unknown viruses inside. Try to use k-mer frequencies as features 
+  and cluster the sequences based on that.\\Can you roughly classify the unknown viruses?\\ \ \\
+  {\tiny You do not have to do this in Python. If you are more familiar with, for example, R, feel free to use this as well.\\
+  I am just a little bit Python addicted. :)}
+  \end{block}
+\end{frame}
+
+
 % Backup Slides. Using this macro, you'd get a slide number for each
 % backup slide without increasing the maximum slide numbers of the original presentation.
 % However, for this, the framenumber has to be inserted - which isn't in the template by default
