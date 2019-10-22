@@ -67,19 +67,32 @@ classifier = svm.SVC(kernel='linear')
 
 \end{frame}
 
-\section[Iris data]{Applying machine learning to real biological data}
+\section[Virus data]{Applying machine learning to real biological data}
 
-\begin{frame}[c, fragile]\frametitle{The Iris test data set}
+\begin{frame}[c, fragile]\frametitle{Our virus toy-data}
 
   \begin{lstlisting}[language=Python]
-from sklearn import svm, datasets
+import csv
+from sklearn import svm
 from sklearn.metrics import confusion_matrix, accuracy_score
-# load the iris dataset
-iris = datasets.load_iris()
-@\pause@
-# parse the important fields
-data = iris.data
-target = iris.target
+# read and parse the dataset
+data = [] 
+target = [] @\pause@ 
+with open('virus.csv', 'r') as inputStream: @\pause@
+  reader = csv.reader(inputStream, delimiter=',') 
+  for idx, row in enumerate(reader):@\pause@ 
+    if idx == 0: 
+      continue @\pause@
+  data.append(row[:4]) 
+  target.append(row[4]) 
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{Let's make a Machine Learning model}
+\begin{lstlisting}[language=Python]
+import csv
+from sklearn import svm
+from sklearn.metrics import confusion_matrix, accuracy_score
 @\pause@
 # create a classifer model via svm and train it with the data
 svmLinear = svm.SVC(kernel='linear').fit(data, target)
@@ -90,8 +103,9 @@ prediction = svmLinear.predict(data)
 # check performance of our prediction and model
 confusion_matrix(target, prediction)
 accuracy_score(target, prediction)
-  \end{lstlisting}
+\end{lstlisting}
 \end{frame}
+
 
 \begin{frame}[c, fragile]\frametitle{Easy, right?}
   \begin{block}{Problems...!?}
@@ -131,7 +145,7 @@ accuracy_score(target_test, prediction)
   \uncover<2->{
   \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{sphx_glr_plot_iris_001.png}
+    \includegraphics[height=0.95\textheight]{svm_kernels.pdf}
   \end{figure}
   }
 \end{frame}

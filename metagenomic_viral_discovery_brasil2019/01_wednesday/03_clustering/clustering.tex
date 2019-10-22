@@ -23,24 +23,26 @@
 \section[PCA]{PCA with scikit-learn}
 \begin{frame}[c, fragile]\frametitle{A quick example}
   \begin{lstlisting}[language=Python, showstringspaces=false]
-from sklearn import datasets
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import numpy as np 
 import pandas as pd 
 import matplotlib.pyplot as plt
 
-iris = datasets.load_iris()
-# combine everything into a pandas DataFrame. 
-# numpy.c_ concatenates the given vector into one (note the [] instead of () )
-df = pd.DataFrame(data= np.c_[iris['data'], iris['target_names'][iris['target']]], 
-                  columns= iris['feature_names'] + ['target']) 
+
+data = [] 
+target = [] 
+target_names = list(class2id.keys())
+with open('virus.csv', 'r') as inputStream: 
+    ...@\pause@
+df = pd.DataFrame(data= np.c_[data, [id2class[x] for x in target]], 
+        columns= ['feature1','feature2','feature3','feature4'] + ['target'])
   \end{lstlisting}
 \end{frame}
 
 \begin{frame}[c, fragile]\frametitle{Normalize your data}
   \begin{lstlisting}[language=Python, showstringspaces=false]
-features = ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+features = ['feature1','feature2','feature3','feature4']
 
 # Here we seperate features from the target column
 x = df.loc[:, features].values
@@ -62,8 +64,6 @@ finalDf = pd.concat([principalDf, df[['target']]], axis = 1)
   \end{lstlisting}
 \end{frame}
 
-\section[Classification]{Virus Classification with PCA}
-
 \begin{frame}[c]\frametitle{Other Application of PCAs}
   \begin{block}{Dimension Reduction in Machine Learning}
     Normally, you would like to use PCA (or any other method for dimension reduction) to \textbf{speed up}
@@ -72,6 +72,8 @@ finalDf = pd.concat([principalDf, df[['target']]], axis = 1)
     we can \textbf{reduce the number of features}, by only taking the most \textbf{important combinations} of features into account.
   \end{block}
 \end{frame}
+
+\section[Classification]{Virus Classification with PCA}
 
 \begin{frame}[c]\frametitle{Exercise / Homework}
   \begin{block}{}

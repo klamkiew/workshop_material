@@ -18,10 +18,8 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import datasets
 # we know this already...
-iris = datasets.load_iris()
-data = iris.data
-target = iris.target
-@\pause@
+with open('virus.csv', 'r') as inputStream: 
+...@\pause@
 
 # create the classifier object
 # n_estimators: number of trees for the forest
