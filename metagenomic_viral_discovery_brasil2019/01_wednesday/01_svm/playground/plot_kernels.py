@@ -1,16 +1,11 @@
 """
-Script taken and adapted from:
-https://scikit-learn.org/0.18/auto_examples/svm/plot_iris.html
 
-==================================================
-Plot different SVM classifiers in the iris dataset
-==================================================
+==============================
+Plot different SVM classifiers
+==============================
 
-Comparison of different linear SVM classifiers on a 2D projection of the iris
+Comparison of different linear SVM classifiers on a 2D projection of our virus
 dataset. We only consider the first 2 features of this dataset:
-
-- Sepal length
-- Sepal width
 
 This example shows how to plot the decision surface for four SVM classifiers
 with different kernels.
