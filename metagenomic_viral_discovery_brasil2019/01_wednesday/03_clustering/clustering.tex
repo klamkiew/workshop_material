@@ -55,9 +55,12 @@ x = StandardScaler().fit_transform(x)
 
 
 \begin{frame}[c, fragile]\frametitle{Applying PCA}
-  \begin{lstlisting}[language=Python, showstringspaces=false]    
+  \begin{lstlisting}[language=Python, showstringspaces=false]
+# create a PCA object that reduces the data to 2D 
 pca = PCA(n_components=2)
+# fit the data
 principalComponents = pca.fit_transform(x)
+# bring everything a format / data structure for the PCA
 principalDf = pd.DataFrame(data = principalComponents
          , columns = ['principal component 1', 'principal component 2'])
 finalDf = pd.concat([principalDf, df[['target']]], axis = 1)
