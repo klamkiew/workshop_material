@@ -118,9 +118,12 @@ if __name__ == '__main__':
     data_training, data_test, target_training, target_test = train_test_split(trainingSet, targets, test_size=0.2)
 
     # creating the random forest classifier and already fitting the training data
-    
+    rfc = RandomForestClassifier(n_estimators=150, max_depth=2).fit(data_training, target_training)
     # prediction of the test set
-    
+    prediction = rfc.predict(data_test)
     # output the confusion matrix to evaluate the model
-    
+    print()
+    print(metrics.confusion_matrix(target_test, prediction))
+    print(metrics.accuracy_score(target_test, prediction))
+
         
