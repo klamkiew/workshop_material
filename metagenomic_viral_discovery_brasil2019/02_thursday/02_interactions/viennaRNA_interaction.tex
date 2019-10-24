@@ -12,7 +12,13 @@
 \end{frame}
 
 \begin{frame}[c]{Why RNA-RNA Interactions?}
-  ToDo: Picture here.
+  \pause
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{lri_review.png}\\
+    {\tiny Beth L. Nicholson and K. Andrew White (2014) "Functional long-range RNA-RNA interactions in positive-strand RNA viruses.",\\
+     Nature Reviews Microbiology volume 12, pages 493–504}
+  \end{figure}
 \end{frame}
 
 \section[Sequences]{Interactions for single sequences}
@@ -47,7 +53,6 @@ $> RNAcofold [OPTIONS] < sequences.fasta > sequences.cofold
   \begin{itemize}
     \item First sequence is colored green
     \item Second sequence is colored red\\[3em]
-    \item<2-> What happens, when there are more than 2 input sequences? 
   \end{itemize}
 \end{minipage}
 \end{frame}
@@ -154,9 +159,28 @@ RNAaliduplex [OPTIONS] <file1.aln> <file2.aln>
 
 \section[LRIs]{Long-Range Interactions}
 
-\begin{frame}[c]{Why RNA-RNA Interactions?}
-  ToDo: Picture here.
+
+\begin{frame}[c]{We remember...}
+  \pause
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{lri_review.png}\\
+    {\tiny Beth L. Nicholson and K. Andrew White (2014) "Functional long-range RNA-RNA interactions in positive-strand RNA viruses.",\\
+     Nature Reviews Microbiology volume 12, pages 493–504}
+  \end{figure}
 \end{frame}
+
+
+\begin{frame}[c]\frametitle{Why LRIs?}
+  \begin{itemize}
+    \item Interaction spans distances between a few hundred and several thousands of nucleotides
+    \item few are described in positive stranded RNA viruses
+    \item often located in loop regions (bulges, hairpins, ...)\\
+    \uncover<2->{
+    $\Rightarrow$ pseudo-knots!
+    }
+  \end{itemize}
+ \end{frame}
 
 \begin{frame}[c]\frametitle{RNA-RNA interactions are crucial for RNA viruses}
   \begin{columns}
