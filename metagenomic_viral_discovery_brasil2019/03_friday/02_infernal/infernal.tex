@@ -1,0 +1,135 @@
+\input{config}
+
+\title{Theoretical and practical metagenomic approaches to viral discovery}
+\subtitle{Practical Session: Infernal and covariance models}
+\author{Kevin Lamkiewicz, Manja Marz}
+\date{25.10.2019\\[1em]European Virus Bioinformatics Center}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{Infernal}
+  \texttt{http://eddylab.org/infernal}
+  \begin{block}{User's Guide Quote:}
+      \textbf{How to avoid reading this manual}\\
+      If you’re like most people, you don’t enjoy reading documentation. You’re probably thinking: 113 pages
+      of documentation, you must be joking!
+  \end{block}
+
+  \uncover<2->{
+  \begin{minipage}{0.5\textwidth}
+      \begin{figure}[htbp]
+          \centering
+          \includegraphics[width=0.95\textwidth]{figures/sequence_struc.png}          
+      \end{figure}
+  \end{minipage}\hfill \uncover<3->{\begin{minipage}{0.49\textwidth}
+      \begin{figure}[htbp]
+          \centering
+          \includegraphics[width=0.95\textwidth]{figures/struc_tree.png}
+      \end{figure}
+  \end{minipage}
+  }}
+
+\end{frame}
+
+\begin{frame}[c]{}
+    \begin{block}{Use case}
+        Given a metagenomic sample, let's assume we already assembled the reads to contigs.
+        We suspect that viruses related to the Alphacoronaviruses are present in our sample, however,
+        the sequence similarity is not sufficiently high for conventional methods like \texttt{blast} 
+        or hidden markov-models.
+    \end{block}
+    \uncover<2->{
+        \begin{block}{Restriction}
+            Since scanning with Infernal takes quite a while, we won't use a real metagenomic sample today.
+            Instead, we will download some genomes from the NCBI database - the procedure is the same for "real
+            metagenomes", but faster.
+        \end{block}
+    }
+\end{frame}
+
+
+
+\begin{frame}[c, fragile]\frametitle{CMbuild}
+    In order to build a covariance model, we need an alignment.\\
+    \texttt{CMbuild} can handle \texttt{stockholm} and \texttt{CLUSTAL} format.
+\begin{lstlisting}
+# go to: https://www.ncbi.nlm.nih.gov/nuccore
+# txid693996[Organism:exp] AND complete genome[Title]
+# download them: all_complete_acov.fasta
+@\pause@
+# build cm from aln alignment
+$> mlocarna --stockholm corona_5utr.fasta
+# or clustalw corona_5utr.fasta
+@\pause@
+$> cmbuild corona_5utr.cvm corona_5utr.out/results/result.stk
+# or cmbuild --noss corona_5utr.cvm corona_5utr.aln
+\end{lstlisting}
+\vspace{2em}
+\uncover<4->{Which one of the two approaches is more reasonable?}
+\end{frame}
+
+\begin{frame}[c,fragile]\frametitle{CMcalibrate}
+    \begin{lstlisting}
+# now we calibrate our covariance model
+# thus, the emission and transition probabilities are trained
+# this takes quite a while
+$> cmcalibrate --cpu 4 corona_5utr.cvm
+    \end{lstlisting}
+\vspace{2em}
+\uncover<2->{
+    \begin{block}{I prepared something beforehand...}
+        Since \texttt{cmcalibrate} takes quite a while, even for such a small
+        dataset, I already calibrated the covariance model beforehand.
+        You find the CM here:\\
+        \texttt{TODO}
+    \end{block}
+}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{CMsearch}
+    \begin{lstlisting}
+# One last step - now we search for sequences (or fragments),
+# that fit to our covariance model.
+
+# search in the fasta file for sequences matching
+# the cmfile and get their positions as table
+
+$> cmsearch --cpu 4 --tblout corona_5utr_cmsearch.csv corona_5utr.cvm \ 
+        all_complete_acov.fa > cmsearch.log
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results}
+  \begin{figure}
+    \centering
+    \hspace*{-2em}\includegraphics[width=1.1\linewidth]{cmsearch_output.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Thanks and goodbye}
+    \begin{center}
+    	\includegraphics<1->[width=1\textwidth]{figures/sequence_sim.pdf} \\ \vfill
+    	\includegraphics<2->[width=1\textwidth]{figures/structure_sim.pdf}
+   	\end{center}
+\end{frame}
+
+% # train emission and transition probabilities
+% $> cmcalibrate --cpu 2 corona_5utr.cvm
+% @\pause@
+% # search in the fasta file for sequences matching
+% # the cmfile and get their positions as table
+% $> cmsearch --cpu 2 --tblout corona_5utr_cmsearch.csv corona_5utr.cvm \ 
+%         all_complete_acov.fa > cmsearch.log
+
+% Backup Slides. Using this macro, you'd get a slide number for each
+% backup slide without increasing the maximum slide numbers of the original presentation.
+% However, for this, the framenumber has to be inserted - which isn't in the template by default
+\beginbackup
+
+\backupend
+
+\end{document}

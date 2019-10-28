@@ -1,0 +1,136 @@
+\input{config}
+
+\title{Theoretical and practical metagenomic approaches to viral discovery}
+\subtitle{Practical Session: Random Forest Classifier and viral application}
+\author{Kevin Lamkiewicz, Manja Marz}
+\date{23.10.2019\\[1em]European Virus Bioinformatics Center}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\section[Implementation]{How to: Implement the Random Forest Classifier}
+
+\begin{frame}[c,fragile]\frametitle{Random Forest}
+  \begin{lstlisting}[language=Python]
+from sklearn.ensemble import RandomForestClassifier
+# we know this already...
+with open('virus.csv', 'r') as inputStream: 
+...@\pause@
+
+# create the classifier object
+# n_estimators: number of trees for the forest
+# max_depth: maximum depth of one tree
+rfc = RandomForestClassifier(n_estimators=100, max_depth=2)
+rfc = rfc.fit(data, target)
+  \end{lstlisting}
+\end{frame}
+
+
+\section[Hands-On]{Training our model to identify viral elements}
+
+\begin{frame}[c]\frametitle{We want to identify viral pre-miRNAs}
+  \begin{block}{Our task:}
+    In the \texttt{miRBase} database are currently around 320 viral pre-miRNAs.
+    We want to use them in to train a machine learning model that can distinguish between
+    viral pre-miRNAs and other sequences.
+  \end{block}
+  \vspace*{3em}
+  \uncover<2->{
+    \begin{block}{I already prepared...}
+      \begin{itemize}
+        \item a file with all precursors
+        \item a file with our negative data
+        \item some utilities we need (reading the data, ...)
+        \ \\
+        \item<3-> Features?
+      \end{itemize}
+    \end{block}
+  }
+\end{frame}
+
+\begin{frame}[c]\frametitle{Exercise}
+  \pause
+  \begin{block}{Your task}
+    Have a look at the \texttt{rf\_classifier.py} script. Try to understand as much of it as possible.\\ \ \\
+    Then, create a Random Forest Classifier and train the model with the data -- \texttt{precursor.fa} and \texttt{negative\_set.fa}
+  \end{block}
+\end{frame}
+
+\section[Discussion]{Let us discuss our results}
+
+\begin{frame}[c,fragile]\frametitle{First the basics}
+  \begin{lstlisting}[language=Python]
+# first we need to translate the sequences into something
+# that can be used by the machine learning algorithm:
+@\pause@
+import numpy as np
+@\pause@
+# read in the data
+trainingsData = read_training_set(positive, negative)
+@\pause@
+# transform the sequence into features
+trainingSet, targets = transform_data(trainingsData)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c,fragile]\frametitle{Function Definitions}
+  \begin{lstlisting}[language=Python]
+def transform_data(data):
+    # this will be our data structure
+    trainingSet = []
+    targets = []
+    @\pause@
+    # iterate over all sequences
+    for dataPoint in data:
+      sequence = dataPoint[0]
+      group = dataPoint[1]
+      # extract the features
+      length = len(sequence)
+      ...  
+      @\pause@
+      # store everything in our array
+      vector = [length, ...]
+      trainingSet.append(vector)
+      targets.append(group)
+      @\pause@
+    # return the data within a numpy array
+    return(np.array(trainingSet, dtype=float), targets)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[c, fragile]\frametitle{Performance of our model}
+  \begin{lstlisting}[language=Python]
+# we know this already. we split the data into training and test sets
+data_training, data_test, target_training, target_test = 
+     train_test_split(trainingSet, targets, test_size=0.2)
+
+# creating the random forest classifier and already fitting the training data
+rfc = RandomForestClassifier(n_estimators=100, max_depth=2).
+      fit(data_training, target_training)
+# prediction of the test set
+prediction = rfc.predict(data_test)
+# output the confusion matrix to evaluate the model
+print()
+print(metrics.confusion_matrix(target_test, prediction))
+print(metrics.accuracy_score(target_test, prediction))
+  \end{lstlisting}
+\end{frame}
+
+% Backup Slides. Using this macro, you'd get a slide number for each
+% backup slide without increasing the maximum slide numbers of the original presentation.
+% However, for this, the framenumber has to be inserted - which isn't in the template by default
+\beginbackup
+
+\begin{frame}[c]\frametitle{Coffee Break}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{coffeebreak.png}
+  \end{figure}
+\end{frame}
+
+\backupend
+
+\end{document}
